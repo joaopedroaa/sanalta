@@ -1,29 +1,66 @@
 <template>
-  <VContainer class="mt-14">
-    <VForm @submit.prevent="onSubmit">
-      <VCard max-width="600" class="mx-auto pa-5">
-        <VCardTitle>
-          <div class="d-flex align-center justify-center">
-            <VIcon icon="mdi-chat" />
-            <h3 class="ml-2">Vue Chatapp</h3>
-          </div>
+  <VContainer
+    fluid
+    class="d-flex align-center justify-center fill-height bg-grey-lighten-5"
+  >
+    <VForm @submit.prevent="onSubmit" class="w-100">
+      <VCard
+        max-width="500"
+        class="mx-auto pa-6 pa-md-8"
+        elevation="0"
+        border
+        rounded="lg"
+      >
+        <VCardTitle
+          class="d-flex flex-column align-center justify-center text-center"
+        >
+          <VIcon icon="mdi-message-text" size="x-large" color="primary" />
+          <h1 class="text-h5 font-weight-bold mt-3">Medalta Chat</h1>
         </VCardTitle>
+
+        <VCardSubtitle class="text-center mb-6">
+          Identifique-se para iniciar a <br />conversa de maneira segura e
+          anonima
+        </VCardSubtitle>
+
         <VCardText class="py-4">
-          <VTextField label="Seu Nome" v-model="state.username" />
-          <VSelect :items="rooms" label="Sala" v-model="state.room" />
-          <VSelect :items="userTypes" label="Você é" v-model="state.type" />
+          <VSelect
+            :items="groups"
+            v-model="state.group"
+            label="Sala"
+            variant="outlined"
+            prepend-inner-icon="mdi-forum-outline"
+            class="mb-4"
+          />
+          <VSelect
+            :items="userTypes"
+            v-model="state.type"
+            label="Você é"
+            variant="outlined"
+            prepend-inner-icon="mdi-account-tie-outline"
+            class="mb-4"
+          />
+          <VTextField
+            v-model="state.username"
+            label="Seu nome é opcional"
+            variant="outlined"
+            prepend-inner-icon="mdi-account-outline"
+            class="mb-4"
+          />
         </VCardText>
+
         <VCardActions>
-          <V-Btn
+          <VBtn
+            :disabled="!state.group || !state.type"
             block
             color="primary"
-            :disabled="!state.username || !state.room || !state.type"
-            variant="flat"
             size="large"
             type="submit"
+            variant="flat"
+            class="text-capitalize font-weight-bold"
           >
-            Entrar no Chat
-          </V-Btn>
+            Entrar
+          </VBtn>
         </VCardActions>
       </VCard>
     </VForm>
@@ -31,21 +68,49 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue';
-import { useRouter } from 'vue-router';
+import { reactive } from "vue";
+import { useRouter } from "vue-router";
 const router = useRouter();
 
-const rooms = ['Atendimento Geral', 'Suporte Técnico', 'Discussão Aberta'];
-const userTypes = ['paciente', 'consultor']; // NOVO: Tipos de usuário disponíveis
+const groups = ["Atendimento Personalizado", "Atendimento 24h"];
+const userTypes = ["Não quero me identificar", "paciente", "pscicologo"];
 
 const state = reactive({
-  username: '',
-  room: rooms[0],
-  type: userTypes[0], // NOVO: Adiciona 'type' ao estado inicial
+  username: "",
+  group: groups[0],
+  type: userTypes[0],
 });
 
+function makeid(length: number) {
+  let result = "";
+  let characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  let charactersLength = characters.length;
+
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
 const onSubmit = () => {
-  // MODIFICADO: Adiciona o 'type' à URL para ser enviado ao backend
-  router.push(`/chat?username=${state.username}&room=${state.room}&type=${state.type}`);
+  if (!state.username) {
+    state.username = makeid(8);
+  }
+
+  if (state.type == "Não quero me identificar") {
+    state.type = "-";
+  }
+
+  router.push(
+    `/chat?username=${state.username}&group=${state.group}&type=${state.type}`
+  );
 };
 </script>
+
+<style scoped>
+/* Adiciona um estilo sutil ao fundo da página, se desejar */
+.fill-height {
+  min-height: 100vh;
+}
+</style>
