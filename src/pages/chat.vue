@@ -1,161 +1,225 @@
 <template>
-  <VContainer>
-    <VCard class="mx-auto pa-5">
-      <VCardTitle class="pb-5">
-        <div class="d-flex align-center justify-space-between text-primary">
-          <div class="d-flex align-center">
-            <VIcon icon="mdi-chat" />
-            <div class="font-weight-bold text-h6 ml-2">Vue Chatapp</div>
+  <VLayout class="rounded rounded-md">
+    <VNavigationDrawer  location="right" :width="400" permanent>
+      <VSheet color="grey-lighten-5" height="100%">
+        <div class="pa-4">
+          <div class="d-flex align-center mb-2">
+            <VIcon icon="mdi-account-group-outline" class="mr-2" />
+            <div class="font-weight-bold text-capitalize">{{ currentRoom }}</div>
           </div>
-          <VBtn color="primary" elevation="0" class="text-capitalize">
-            Leave {{ $route.query.room }}
-          </VBtn>
+
+          <p class="text-caption text-grey">{{ users.length }} usuário(s) online</p>
         </div>
+        <VDivider />
+        <VList>
+          <VListItem
+            v-for="user in users"
+            :key="user.id"
+            :title="user.username"
+            :subtitle="user.type"
+            :class="{ 'bg-blue-lighten-5': user.username === route.query.username }"
+          >
+            <template #prepend>
+              <VAvatar color="primary" size="small">
+                <span class="text-white font-weight-bold">{{ getInitials(user.username) }}</span>
+              </VAvatar>
+            </template>
+          </VListItem>
+        </VList>
+      </VSheet>
+    </VNavigationDrawer>
 
+    <VAppBar title="Medalta" flat border>
+             <VBtn
+        variant="outlined"
+        color="error"
+        class="text-capitalize mr-4"
+        @click="leaveRoom"
+      >
+        Sair da Sala
+      </VBtn>
+    </VAppBar>
 
-      </VCardTitle>
-      <VDivider></VDivider>
+    <VMain class="d-flex flex-column" style="height: 100vh;">
+      <div class="flex-grow-1 pa-8 overflow-y-auto" ref="chatContainer">
+        <div
+          class="d-flex w-100 mb-4 p-10"
+          v-for="(chat, i) in chats"
+          :key="i"
+          :class="getChatBubbleClass(chat.username)"
+        >
+          <VSheet
+            max-width="65%"
+            class="pa-3 rounded-xl"
 
-      <VCardText class="py-6 px-0">
-        <div class="d-flex">
-          <!-- Sidebar -->
-          <div class="bg-grey-lighten-3 py-4 px-6">
-            <div class="mb-4">
-              <div class="d-flex align-center mb-2 px-3 py-2 rounded-md bg-white">
-                <VIcon icon="mdi-chat-outline" />
-                <div class="text-body-1 ml-2">Room Name</div>
-              </div>
-              <div class="mb-2 text-body-1 ml-2 text-capitalize">{{ currentRoom }}</div>
-            </div>
-            <div class="d-flex align-center mb-2 px-3 py-2 rounded-md bg-white">
-              <VIcon icon="mdi-account-group-outline" />
-              <div class="text-body-1 ml-2">Users</div>
-            </div>
-            <v-list>
-              <v-list-item v-for="(user, i) in users" :key="i">
-                <v-list-item-title>{{ user.username }}</v-list-item-title>
-                <VDivider v-if="user.username === route.query.username"></VDivider>
-              </v-list-item>
-            </v-list>
-          </div>
-          <!-- Chat -->
-          <div style="height: 400px" class="overflow-y-auto pl-6 flex-fill">
+            :color="getChatBubbleColor(chat.username)"
+          >
             <div
-              class="bg-transparent w-full mb-3 d-flex"
-              v-for="(chat, i) in chats"
-              :key="i"
-              :class="{
-                'justify-center': chat.username === 'Vue Chatapp Admin',
-                'justify-end': chat.username === route.query.username,
-                'justify-start': chat.username !== route.query.username,
-              }"
+              v-if="chat.username !== 'chatAdmin' && chat.username !== route.query.username"
+              class="d-flex align-center text-caption mb-1"
             >
-              <div
-                class="px-6 py-2 w-50 rounded-md mb-3"
-                :class="{
-                  'bg-red-lighten-4': chat.username === 'Vue Chatapp Admin',
-                  'bg-blue-lighten-5': chat.username === route.query.username,
-                  'bg-light-green-lighten-4':
-                    chat.username !== route.query.username &&
-                    chat.username !== 'Vue Chatapp Admin',
-                }"
-              >
-                <div class="d-flex align-center gap-x-3">
-                  <div class="text-xs text-primary font-semibold">
-                    {{ chat.username }}
-                  </div>
-                  <div class="text-xs">{{ chat.time }}</div>
-                </div>
-                <div class="mt-1 text-body-1">
-                  {{ chat.text }}
-                </div>
-              </div>
+              <div class="font-weight-bold text-primary">{{ chat.username }}</div>
             </div>
-          </div>
+
+            <div class="text-body-1 d-flex align-end">
+              <span>{{ chat.text }}</span>
+
+              <span class="text-caption text-grey-darken-1 ml-3" style="margin-bottom: -4px;">
+                {{ chat.time }}
+              </span>
+            </div>
+
+          </VSheet>
         </div>
-      </VCardText>
-      <VDivider></VDivider>
-      <VCardActions class="pt-6">
-        <form class="w-100" @submit.prevent="onSubmit">
+      </div>
+
+      <div class="flex-shrink-0 pa-4" style="background-color: white;">
+        <VForm @submit.prevent="onSubmit" class="w-100">
+
           <VTextField
-            hide-details
-            variant="solo"
-            elevation="0"
-            rounded="lg"
             v-model="message"
+            variant="solo"
+            placeholder="Digite sua mensagem..."
+            hide-details
+            rounded="lg"
+            autofocus
           >
             <template #append-inner>
-              <v-btn
-                append-icon="mdi-send-circle-outline"
-                rounded="lg"
-                class="bg-primary text-white px-6"
-              >
-                Send
-              </v-btn>
+              <V-Btn
+                type="submit"
+                icon="mdi-send"
+                color="primary"
+                variant="flat"
+                @click="onSubmit"
+                :disabled="!message.trim()"
+              />
             </template>
           </VTextField>
-        </form>
-      </VCardActions>
-    </VCard>
-  </VContainer>
+        </VForm>
+      </div>
+    </VMain>
+  </VLayout>
 </template>
 
 <script setup lang="ts">
+import { useRoute, useRouter } from 'vue-router';
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import { io, type Socket } from 'socket.io-client';
+
 type Chat = {
   username: string;
   text: string;
   time: string;
   room?: string;
 };
+
 type User = {
   id: string;
-  username: string;
+  username:string;
   room: string;
+  type: 'paciente' | 'consultor';
 };
-import { useRoute, useRouter } from 'vue-router';
-import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
-import { io, type Socket } from 'socket.io-client';
+
 const route = useRoute();
 const router = useRouter();
 
 const message = ref('');
-const chats = ref<Chat[]>([
-
-]);
-const users = ref<User[]>([
-
-]);
-const currentRoom = ref('')
+const chats = ref<Chat[]>([]);
+const users = ref<User[]>([]);
+const currentRoom = ref('');
 const socket = ref<Socket>();
-const onSubmit = async() => {
+const chatContainer = ref<HTMLElement | null>(null); // NOVO: Ref para o container do chat
+
+// NOVO: Função para scrollar para o final do chat
+const scrollToBottom = async () => {
+  await nextTick();
+  if (chatContainer.value) {
+    chatContainer.value.scrollTop = chatContainer.value.scrollHeight;
+  }
+};
+
+// NOVO: Função para pegar as iniciais do nome de usuário
+const getInitials = (username: string = '') => {
+  if (username === 'chatAdmin') return 'A';
+  return username.substring(0, 2).toUpperCase();
+};
+
+// NOVO: Funções para estilização dinâmica das bolhas de chat
+const getChatBubbleClass = (username: string) => {
+  if (username === 'chatAdmin') return 'justify-center';
+  return username === route.query.username ? 'justify-end' : 'justify-start';
+};
+
+const getChatBubbleColor = (username: string) => {
+  if (username === 'chatAdmin') return 'blue-grey-lighten-5';
+  return username === route.query.username ? 'blue-lighten-4' : 'grey-lighten-3';
+};
+
+const onSubmit = () => {
+  console.log('Função onSubmit chamada!'); // Adicione esta linha
+
+  if (!message.value.trim()){
+    console.log('Mensagem vazia, abortando.');
+    return
+  }
+
+
 
   socket.value?.emit('chatMessage', message.value);
-  console.log( message.value);
+  console.log('Evento chatMessage emitido.'); // Adicione esta linha
+  message.value = '';
+  scrollToBottom();
+};
 
+const leaveRoom = () => {
+  socket.value?.disconnect();
+  router.push('/');
+};
 
-  await nextTick(() => message.value = '')
-}
 onMounted(() => {
   socket.value = io("http://localhost:3001");
-  const { username, room } = route.query as Partial<Chat>;
+  const { username, room, type } = route.query as Partial<User>;
 
-    if(!username || !room){
-      router.push('/')
-    }
-    socket.value?.emit("joinRoom", { username, room });
-    socket.value?.on("roomUsers", (response: { room: string, users: User[] }) => {
-      users.value = response.users
-      currentRoom.value = response.room
-    })
-    socket.value?.on("message", (message: Chat) => {
-      chats.value.push(message)
-    })
+  if (!username || !room || !type) {
+    router.push('/');
+    return;
+  }
 
+  socket.value?.emit("joinRoom", { username, room, type });
+
+  socket.value?.on("roomData", (response: { room: string, users: User[] }) => {
+    users.value = response.users;
+    currentRoom.value = response.room;
+  });
+
+  socket.value?.on("chatHistory", (history: Chat[]) => {
+    chats.value = history;
+    scrollToBottom();
+  });
+
+  socket.value?.on("message", (newMessage: Chat) => {
+    chats.value.push(newMessage);
+    scrollToBottom();
+  });
 });
+
 onBeforeUnmount(() => {
-  console.log('[DISCONNECT_BLOCK]');
   socket.value?.disconnect();
-})
+});
 </script>
 
-<style scoped></style>
+<style scoped>
+/* Adicionando um estilo para a barra de rolagem para um visual mais limpo */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 8px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background-color: #d1d5db; /* cinza claro */
+  border-radius: 4px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background-color: #f8fafc; /* quase branco */
+}
+</style>

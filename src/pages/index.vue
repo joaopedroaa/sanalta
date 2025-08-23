@@ -1,5 +1,5 @@
 <template>
-  <VContainer>
+  <VContainer class="mt-14">
     <VForm @submit.prevent="onSubmit">
       <VCard max-width="600" class="mx-auto pa-5">
         <VCardTitle>
@@ -9,19 +9,21 @@
           </div>
         </VCardTitle>
         <VCardText class="py-4">
-          <VTextField label="Username" v-model="state.username"></VTextField>
-          <VSelect :items="rooms" label="Room" v-model="state.room"></VSelect>
+          <VTextField label="Seu Nome" v-model="state.username" />
+          <VSelect :items="rooms" label="Sala" v-model="state.room" />
+          <VSelect :items="userTypes" label="Você é" v-model="state.type" />
         </VCardText>
         <VCardActions>
-          <VBtn
+          <V-Btn
             block
             color="primary"
-            :disabled="!state.username || !state.room"
-            variant="outlined"
+            :disabled="!state.username || !state.room || !state.type"
+            variant="flat"
+            size="large"
             type="submit"
           >
-            Join Chatapp
-          </VBtn>
+            Entrar no Chat
+          </V-Btn>
         </VCardActions>
       </VCard>
     </VForm>
@@ -32,15 +34,18 @@
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
-const rooms = ['vue installation', 'vue guide', 'vue api', 'vue examples'];
+
+const rooms = ['Atendimento Geral', 'Suporte Técnico', 'Discussão Aberta'];
+const userTypes = ['paciente', 'consultor']; // NOVO: Tipos de usuário disponíveis
+
 const state = reactive({
   username: '',
   room: rooms[0],
+  type: userTypes[0], // NOVO: Adiciona 'type' ao estado inicial
 });
+
 const onSubmit = () => {
-  console.log('[SUBMIT]');
-  router.push(`/chat?username=${state.username}&room=${state.room}`);
+  // MODIFICADO: Adiciona o 'type' à URL para ser enviado ao backend
+  router.push(`/chat?username=${state.username}&room=${state.room}&type=${state.type}`);
 };
-
-
 </script>
