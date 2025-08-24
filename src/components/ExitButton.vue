@@ -1,5 +1,5 @@
 <template>
-  <VAppBar title="Medalta" flat border>
+  <VAppBar title="Sanalta" flat border>
 
     </VAppBar>
 </template>

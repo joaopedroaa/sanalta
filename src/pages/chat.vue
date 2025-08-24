@@ -48,7 +48,7 @@
       </VSheet>
     </VNavigationDrawer>
 
-    <VAppBar title="Medalta Chat" flat border>
+    <VAppBar title="Sanalta" flat border>
       <VBtn
         variant="outlined"
         color="error"
