@@ -1,8 +1,54 @@
-# Vuetify (Default)
 
-This is the official scaffolding tool for Vuetify, designed to give you a head start in building your new Vuetify application. It sets up a base template with all the necessary configurations and standard directory structure, enabling you to begin development without the hassle of setting up the project from scratch.
+# Sanalta
+_"Cresça com saúde e bem-estar."_
 
-## ❗️ Important Links
+> **Contexto Acadêmico:** Este projeto foi desenvolvido para a disciplina Projeto Integrador em Ciência da Computação (2025/2).
+
+---
+
+## O que é a Sanalta?
+
+A Sanalta é uma plataforma digital inovadora e humanizada, projetada para ser um ecossistema completo de apoio à saúde mental. Nossa missão é resolver três desafios centrais:
+
+1.  **A dificuldade de acesso:** Encontrar ajuda profissional qualificada pode ser complicado por barreiras geográficas, de agenda ou pelo receio inicial.
+2.  **O estigma e a vergonha:** Muitas pessoas hesitam em falar sobre seus sentimentos por medo de julgamento, buscando anonimato e um espaço seguro.
+3.  **A necessidade de apoio imediato:** Canais de ajuda imediata, como o CVV, podem estar sobrecarregados, deixando pessoas em momentos de vulnerabilidade sem um suporte básico inicial.
+
+A Sanalta conecta o poder da comunidade com a expertise de profissionais qualificados em um ambiente seguro, acessível e acolhedor.
+
+## Pilares da Plataforma
+
+O projeto se baseia em dois pilares fundamentais que funcionam de forma integrada:
+
+#### 1. Grupos de Apoio Anônimos (Comunidades Sanalta)
+
+O coração da plataforma. Um espaço seguro e 100% anônimo para que os usuários possam se expressar e compartilhar experiências com pessoas que enfrentam desafios semelhantes.
+
+* **Anonimato Garantido:** Usuários utilizam apelidos e avatares, sem necessidade de expor sua identidade real.
+* **Moderação Profissional:** Grupos temáticos (ansiedade, relacionamentos, carreira, etc.) são moderados por psicólogos para garantir um ambiente construtivo e seguro.
+* **Apoio Comunitário:** Foco na empatia e na troca de experiências, combatendo o isolamento e a solidão.
+
+#### 2. Sessões com Psicólogos (Espaço Sanalta)
+
+Uma ponte direta para o atendimento profissional, permitindo que o apoio se transforme em orientação personalizada.
+
+* **Profissionais Qualificados:** Acesso a uma rede de psicólogos licenciados e verificados.
+* **Consultas Online:** Sessões individuais realizadas por videochamada segura e criptografada dentro da própria plataforma.
+* **Flexibilidade e Acessibilidade:** Agendamento fácil e modelos de monetização claros (planos mensais ou pagamento por sessão) para incentivar a continuidade do cuidado.
+
+## Objetivos do Projeto
+
+#### Principal
+* **Promover a saúde mental e o bem-estar**, fornecendo ferramentas acessíveis para o autoconhecimento, desenvolvimento pessoal e melhoria da qualidade de vida emocional dos usuários.
+
+#### Secundários
+* **Construir uma comunidade online segura e acolhedora**, onde o anonimato e o respeito são pilares inegociáveis.
+* **Oferecer uma triagem humanizada**, identificando casos que necessitam de atenção imediata e direcionando-os para o suporte adequado, seja ele textual ou por voz.
+* **Desmistificar a busca por ajuda psicológica**, servindo como uma porta de entrada amigável para a terapia.
+
+
+
+## Important Links
 
 - 📄 [Docs](https://vuetifyjs.com/)
 - 🚨 [Issues](https://issues.vuetifyjs.com/)
@@ -10,7 +56,7 @@ This is the official scaffolding tool for Vuetify, designed to give you a head s
 - 🎮 [Playground](https://play.vuetifyjs.com/)
 - 💬 [Discord](https://community.vuetifyjs.com)
 
-## 💿 Install
+## Install
 
 Set up your project using your preferred package manager. Use the corresponding command to install the dependencies:
 
@@ -23,23 +69,11 @@ Set up your project using your preferred package manager. Use the corresponding 
 
 After completing the installation, your environment is ready for Vuetify development.
 
-## ✨ Features
-
-- 🖼️ **Optimized Front-End Stack**: Leverage the latest Vue 3 and Vuetify 3 for a modern, reactive UI development experience. [Vue 3](https://v3.vuejs.org/) | [Vuetify 3](https://vuetifyjs.com/en/)
-- 🗃️ **State Management**: Integrated with [Pinia](https://pinia.vuejs.org/), the intuitive, modular state management solution for Vue.
-- 🚦 **Routing and Layouts**: Utilizes Vue Router for SPA navigation and vite-plugin-vue-layouts for organizing Vue file layouts. [Vue Router](https://router.vuejs.org/) | [vite-plugin-vue-layouts](https://github.com/JohnCampionJr/vite-plugin-vue-layouts)
-- 💻 **Enhanced Development Experience**: Benefit from TypeScript's static type checking and the ESLint plugin suite for Vue, ensuring code quality and consistency. [TypeScript](https://www.typescriptlang.org/) | [ESLint Plugin Vue](https://eslint.vuejs.org/)
-- ⚡ **Next-Gen Tooling**: Powered by Vite, experience fast cold starts and instant HMR (Hot Module Replacement). [Vite](https://vitejs.dev/)
-- 🧩 **Automated Component Importing**: Streamline your workflow with unplugin-vue-components, automatically importing components as you use them. [unplugin-vue-components](https://github.com/antfu/unplugin-vue-components)
-- 🛠️ **Strongly-Typed Vue**: Use vue-tsc for type-checking your Vue components, and enjoy a robust development experience. [vue-tsc](https://github.com/johnsoncodehk/volar/tree/master/packages/vue-tsc)
-
-These features are curated to provide a seamless development experience from setup to deployment, ensuring that your Vuetify application is both powerful and maintainable.
-
-## 💡 Usage
+## Usage
 
 This section covers how to start the development server and build your project for production.
 
-### Starting the Development Server
+#### Starting the Development Server
 
 To start the development server with hot-reload, run the following command. The server will be accessible at [http://localhost:3000](http://localhost:3000):
 
@@ -49,7 +83,7 @@ yarn dev
 
 (Repeat for npm, pnpm, and bun with respective commands.)
 
-### Building for Production
+#### Building for Production
 
 To build your project for production, use:
 
@@ -61,25 +95,8 @@ yarn build
 
 Once the build process is completed, your application will be ready for deployment in a production environment.
 
-## 💪 Support Vuetify Development
 
-This project is built with [Vuetify](https://vuetifyjs.com/en/), a UI Library with a comprehensive collection of Vue components. Vuetify is an MIT licensed Open Source project that has been made possible due to the generous contributions by our [sponsors and backers](https://vuetifyjs.com/introduction/sponsors-and-backers/). If you are interested in supporting this project, please consider:
-
-- [Requesting Enterprise Support](https://support.vuetifyjs.com/)
-- [Sponsoring John on Github](https://github.com/users/johnleider/sponsorship)
-- [Sponsoring Kael on Github](https://github.com/users/kaelwd/sponsorship)
-- [Supporting the team on Open Collective](https://opencollective.com/vuetify)
-- [Becoming a sponsor on Patreon](https://www.patreon.com/vuetify)
-- [Becoming a subscriber on Tidelift](https://tidelift.com/subscription/npm/vuetify)
-- [Making a one-time donation with Paypal](https://paypal.me/vuetify)
-
-## 📑 License
-[MIT](http://opensource.org/licenses/MIT)
-
-Copyright (c) 2016-present Vuetify, LLC
-
-
-----------------------------
+---
 
 
 - Adicionar lista de salas com o tamanho de pessoas em cada
