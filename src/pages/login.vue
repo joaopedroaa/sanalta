@@ -15,7 +15,8 @@
           class="d-flex flex-column align-center justify-center text-center"
         >
           <VIcon icon="mdi-message-text" size="x-large" color="primary" />
-          <h1 class="text-h5 font-weight-bold mt-3">Sanalta</h1>
+          <h1 class="text-h5 font-weight-bold mt-3">Sanalta </h1>
+
         </VCardTitle>
 
         <VCardSubtitle class="text-center mb-6">
@@ -72,7 +73,8 @@ import { reactive } from "vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
 
-const groups = ["Atendimento Personalizado", "Atendimento 24h"];
+
+const groups = ["Maiores de idade","Saude mental", "Alcolismo"];
 const userTypes = ["Não quero me identificar", "paciente", "pscicologo"];
 
 const state = reactive({
@@ -106,6 +108,8 @@ const onSubmit = () => {
     `/chat?username=${state.username}&group=${state.group}&type=${state.type}`
   );
 };
+
+
 </script>
 
 <style scoped>

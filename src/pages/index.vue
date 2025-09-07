@@ -37,6 +37,7 @@
             >
               Sua jornada para uma vida mais saudável começa aqui.
             </h1>
+                      <p>State: {{ connected }}</p>
             <p
               class="text-h6 font-weight-regular text-grey-darken-2 mx-auto mb-8"
             >
@@ -184,14 +185,18 @@
   </VLayout>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { useRouter } from "vue-router";
+import { computed } from "vue";
+import { state2 } from "@/socket";
+
 
 const router = useRouter();
 
 const goToLogin = () => {
   router.push("/login");
 };
+
 </script>
 
 <style scoped>
