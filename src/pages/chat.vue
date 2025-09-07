@@ -74,7 +74,7 @@
           >
             <div
               v-if="
-                chat.username !== 'chatAdmin' &&
+                chat.username !== 'chatSystem' &&
                 chat.username !== route.query.username
               "
               class="d-flex align-center text-caption mb-1"
@@ -91,7 +91,7 @@
                 class="text-caption text-grey-darken-1 ml-3"
                 style="margin-bottom: -4px"
               >
-                {{ chat.username === "chatAdmin" ? "" : chat.time }}
+                {{ chat.username === "chatSystem" ? "" : chat.time }}
               </span>
             </div>
           </VSheet>
@@ -164,18 +164,18 @@ const scrollToBottom = async () => {
 
 // NOVO: Função para pegar as iniciais do nome de usuário
 const getInitials = (username: string = "") => {
-  if (username === "chatAdmin") return "A";
+  if (username === "chatSystem") return "A";
   return username.substring(0, 2).toUpperCase();
 };
 
 // NOVO: Funções para estilização dinâmica das bolhas de chat
 const getChatBubbleClass = (username: string) => {
-  if (username === "chatAdmin") return "justify-center";
+  if (username === "chatSystem") return "justify-center";
   return username === route.query.username ? "justify-end" : "justify-start";
 };
 
 const getChatBubbleColor = (username: string) => {
-  if (username === "chatAdmin") return "white";
+  if (username === "chatSystem") return "white";
   return username === route.query.username
     ? "blue-lighten-4"
     : "grey-lighten-3";
@@ -189,7 +189,7 @@ const onSubmit = () => {
     return;
   }
 
-  socket.value?.emit("chatMessage", message.value);
+  socket.value?.emit("chat:post_message", message.value);
   console.log("Evento chatMessage emitido."); // Adicione esta linha
   message.value = "";
   scrollToBottom();
@@ -206,31 +206,38 @@ onMounted(() => {
     return;
   }
 
-  socket.value?.emit("userJoinGroup", { username, group, type });
+  socket.value?.emit("group:join", { username, group, type });
 
-  socket.value?.on("groupData", (response: { group: string; users: User[] }) => {
-    users.value = response.users;
+  // Recupera os usuarios do grupo
+  socket.value?.on("group:users_update", (response: { group: string; users: User[] }) => {
     currentGroup.value = response.group;
+    users.value = response.users;
   });
 
-  socket.value?.on("chatHistory", (chatHistory: Chat[]) => {
+  // Recupera as mensagens do grupo
+  socket.value?.on("chat_history_load", (chatHistory: Chat[]) => {
     chats.value = chatHistory;
     scrollToBottom();
   });
 
-  socket.value?.on("message", (newMessage: Chat) => {
+  socket.value?.on("chat:new_message", (newMessage: Chat) => {
     chats.value.push(newMessage);
+    scrollToBottom();
+  });
+
+  socket.value?.on("chat:new_notification", (notification: Chat) => {
+    chats.value.push(notification);
     scrollToBottom();
   });
 });
 
 const leaveGroup = () => {
-  socket.value?.emit("disconnect");
+  socket.value?.emit("group:leave");
   router.push("/");
 };
 
 onBeforeUnmount(() => {
-  socket.value?.emit("disconnect");
+  socket.value?.emit("group:leave");
 });
 </script>
 
