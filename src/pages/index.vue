@@ -18,7 +18,7 @@
           color="grey-darken-1"
           class="text-capitalize"
           prepend-icon="mdi-login-variant"
-          @click="goToLogin"
+          @click="goToService"
         >
           Entrar
         </VBtn>
@@ -49,7 +49,7 @@
               size="x-large"
               class="text-capitalize"
               elevation="4"
-              @click="goToLogin"
+              @click="goToService"
             >
               Comece Agora
             </VBtn>
@@ -87,7 +87,7 @@
               <VBtn
                 color="blue-lighten-1"
                 class="text-capitalize"
-                @click="goToLogin"
+                @click="goToService"
                 block
               >
                 Comece a conversar
@@ -110,7 +110,7 @@
               <VBtn
                 color="blue-lighten-1"
                 class="text-capitalize"
-                @click="goToLogin"
+                @click="goToGroups"
                 block
               >
                 Encontre um Psicólogo
@@ -193,8 +193,12 @@ import { state2 } from "@/socket";
 
 const router = useRouter();
 
-const goToLogin = () => {
-  router.push("/login");
+const goToGroups = () => {
+  router.push("/groups");
+};
+
+const goToService = () => {
+  router.push("/services");
 };
 
 </script>

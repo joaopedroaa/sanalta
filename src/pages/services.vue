@@ -15,7 +15,7 @@
           class="d-flex flex-column align-center justify-center text-center"
         >
           <VIcon icon="mdi-message-text" size="x-large" color="primary" />
-          <h1 class="text-h5 font-weight-bold mt-3">Sanalta </h1>
+          <h1 class="text-h5 font-weight-bold mt-3">Sanalta Serviços </h1>
 
         </VCardTitle>
 
@@ -28,19 +28,21 @@
           <VSelect
             :items="groups"
             v-model="state.group"
-            label="Sala"
+            label="Ajuda"
             variant="outlined"
             prepend-inner-icon="mdi-forum-outline"
             class="mb-4"
           />
-          <VSelect
+
+          <!-- <VSelect
             :items="userTypes"
             v-model="state.type"
             label="Você é"
             variant="outlined"
             prepend-inner-icon="mdi-account-tie-outline"
             class="mb-4"
-          />
+          /> -->
+
           <VTextField
             v-model="state.username"
             label="Seu nome é opcional"
@@ -74,7 +76,7 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 
-const groups = ["Maiores de idade","Saude mental", "Alcolismo"];
+const groups = ["Ajuda urgente!", "Apoio emocional", "Informações sobre saúde mental"];
 const userTypes = ["Não quero me identificar", "paciente", "pscicologo"];
 
 const state = reactive({
@@ -105,7 +107,7 @@ const onSubmit = () => {
   }
 
   router.push(
-    `/chat?username=${state.username}&group=${state.group}&type=${state.type}`
+    `/gliese?username=${state.username}&type=${state.type}`
   );
 };
 
